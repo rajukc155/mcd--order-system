@@ -4,10 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"log"
-	"time"
-	"fmt"
-	"strings"
 )
 
 type Order struct {
