@@ -1,24 +1,32 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/rs/cors"
 )
 
 func main() {
-	// Initialize DB
-	initDB()
-	defer db.Close()
+	// Initialize database
+	InitDB()
 
-	// Routing settings
-	mux := http.NewServeMux()
-	mux.HandleFunc("/orders", orderHandler)
+	// API routes
+	http.HandleFunc("/orders", OrdersHandler)
 
-	// CORS settings (allows access from frontend)
-	handler := cors.Default().Handler(mux)
+	// Enable CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "DELETE"},
+		AllowedHeaders: []string{"*"},
+	})
 
-	fmt.Println("Server starting: http://localhost:8080")
-	http.ListenAndServe(":8080", handler)
+	handler := c.Handler(http.DefaultServeMux)
+
+	log.Println("Server started: http://localhost:8080")
+
+	err := http.ListenAndServe(":8080", handler)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

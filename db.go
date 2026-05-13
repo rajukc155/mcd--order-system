@@ -2,28 +2,33 @@ package main
 
 import (
 	"database/sql"
+	"log"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var db *sql.DB
 
-func initDB() {
+func InitDB() {
 	var err error
-	// Create/Open the SQLite database file
+
 	db, err = sql.Open("sqlite3", "./orders.db")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	// Create table
-	query := `
+	createTable := `
 	CREATE TABLE IF NOT EXISTS orders (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		menu TEXT,
 		quantity INTEGER
-	);`
-	_, err = db.Exec(query)
+	);
+	`
+
+	_, err = db.Exec(createTable)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+
+	log.Println("Database initialized")
 }
