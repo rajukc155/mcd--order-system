@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
 type Order struct {
